@@ -43,15 +43,24 @@ users.pre('save', async function () {
 });
 
 // Create a method in the schema to authenticate a user using the hashed password
+// STATICS are available to the collection as a whole
 users.statics.authenticateBasic = async function (username, password) {
+  // username is grabbed and put into a query object
   let query = { username };
-  return this.findOne(query)
-    .then(user => {
-      user && user.comparePassword(password);
-    })
-    .catch(console.error);
+  // find one with THAT query
+  return (
+    this.findOne(query)
+      // if it finds it, something happens, and if it doesn't the console.error happens (presumably)
+      .then(user => {
+        console.log('USER: .........', user);
+        user && user.comparePassword(password);
+      })
+      .catch(console.error)
+  );
 };
 
+// METHODS only available to individual instantiations of the collections
+// STATICS are available to the collection as a whole
 users.methods.comparePassword = function (plainPassword, password) {
   return bcrypt
     .compare(plainPassword, password)
