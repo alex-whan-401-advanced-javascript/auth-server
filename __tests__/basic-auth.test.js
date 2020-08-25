@@ -40,7 +40,7 @@ describe('Auth Middleware', () => {
       expect(next).toHaveBeenCalledWith(errorObject); // Or perhaps 'Invalid Login', depends on what you choose
     });
 
-    it.only('logs in an admin user with the right credentials', async () => {
+    it('logs in an admin user with the right credentials', async () => {
       let req = {
         headers: {
           authorization: 'Basic YWRtaW46cGFzc3dvcmQ=',
