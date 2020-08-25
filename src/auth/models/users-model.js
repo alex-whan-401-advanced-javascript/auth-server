@@ -35,6 +35,7 @@ const users = new mongoose.Schema({
 
 // Before we save a record:
 // Hash the plain text password given before you save a user to the database
+// Can modify a specific instance of a user
 users.pre('save', async function () {
   if (this.isModified('password')) {
     this.password = await bcrypt.hash(this.password, 10);
@@ -59,7 +60,7 @@ users.methods.comparePassword = function (plainPassword, password) {
 
 // Create a method in the schema to generate a Token following a valid login
 users.methods.generateToken = function () {
-  const token = jwt.sign({ username: this.username, secret });
+  const token = jwt.sign({ username: users.username, secret });
   return token;
 };
 

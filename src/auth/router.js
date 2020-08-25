@@ -11,9 +11,12 @@ router.post('/signup', (req, res, next) => {
   // Accepts either a JSON object or FORM Data with the keys “username” and “password”
   // Creates a new user record in a Mongo database
   let newUser = new User(req.body);
-  newUser.save().then(newUser => {
-    res.status(200).json(newUser);
-  });
+  newUser
+    .save()
+    .then(newUser => {
+      res.status(200).json(newUser);
+    })
+    .catch(console.error);
 });
 
 // Create a POST route for /signin
