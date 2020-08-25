@@ -16,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/alex-whan-401-advanced-javascript/auth-server/issues"
   },
-  "homepage": "https://github.com/alex-whan-401-advanced-javascript/auth-server#readme"
+  "homepage": "https://github.com/alex-whan-401-advanced-javascript/auth-server#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1"
+  }
 }
