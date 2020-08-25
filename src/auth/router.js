@@ -6,11 +6,11 @@ const router = express.Router();
 const basicAuth = require('./middleware/basic');
 const User = require('./models/users-model');
 
-router.post('/signup', async (req, res, next) => {
+router.post('/signup', (req, res, next) => {
   // Create a POST route for /signup
   // Accepts either a JSON object or FORM Data with the keys “username” and “password”
   // Creates a new user record in a Mongo database
-  let newUser = await new User(req.body);
+  let newUser = new User(req.body);
   newUser.save().then(newUser => {
     res.status(200).json(newUser);
   });
