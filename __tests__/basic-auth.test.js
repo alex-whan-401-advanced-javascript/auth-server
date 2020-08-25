@@ -40,7 +40,7 @@ describe('Auth Middleware', () => {
       expect(next).toHaveBeenCalledWith(errorObject); // Or perhaps 'Invalid Login', depends on what you choose
     });
 
-    it('logs in an admin user with the right credentials', async () => {
+    it.only('logs in an admin user with the right credentials', async () => {
       let req = {
         headers: {
           authorization: 'Basic YWRtaW46cGFzc3dvcmQ=',
@@ -49,11 +49,13 @@ describe('Auth Middleware', () => {
       let res = {};
       let next = jest.fn();
 
+      // Only place to "dig" in this test is right here
       await auth(req, res, next);
 
       // cachedToken = req.token;
 
       expect(next).toHaveBeenCalledWith();
+      // Calling "next()" with no arguments = all clear/no issues
     });
   });
 });

@@ -9,7 +9,7 @@ const supergoose = require('@code-fellows/supergoose');
 
 const mockRequest = supergoose(server);
 
-describe('Auth Router', () => {
+describe.skip('Auth Router', () => {
   describe(`users signup/in`, () => {
     it('can sign up', async () => {
       const userData = {

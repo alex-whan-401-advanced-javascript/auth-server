@@ -5,8 +5,6 @@ const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
 require('dotenv').config();
 
-const secret = process.env.SECRET;
-
 // Create a Users Mongoose model/schema in the auth system
 const users = new mongoose.Schema({
   username: { type: String, require: true, unique: true },
@@ -45,6 +43,8 @@ users.pre('save', async function () {
 // Create a method in the schema to authenticate a user using the hashed password
 // STATICS are available to the collection as a whole
 users.statics.authenticateBasic = async function (username, password) {
+  // "COLLECTION-LEVEL CONCERN" - not just asking "Alex" - asking the "collection"? - ask JB again
+
   // username is grabbed and put into a query object
   let query = { username };
   // find one with THAT query
@@ -52,8 +52,8 @@ users.statics.authenticateBasic = async function (username, password) {
     this.findOne(query)
       // if it finds it, something happens, and if it doesn't the console.error happens (presumably)
       .then(user => {
-        console.log('USER: .........', user);
-        user && user.comparePassword(password);
+        // console.log('USER: .........', user);
+        return user && user.comparePassword(password); // add a return? - NEED a return here because ES6 fat arrow functions can return undefined by default?
       })
       .catch(console.error)
   );
@@ -61,15 +61,30 @@ users.statics.authenticateBasic = async function (username, password) {
 
 // METHODS only available to individual instantiations of the collections
 // STATICS are available to the collection as a whole
+// Methods TIE a function to an instance - and are implicitly already calling a function ON a particular instance
 users.methods.comparePassword = function (plainPassword, password) {
-  return bcrypt
-    .compare(plainPassword, password)
-    .then(valid => (valid ? this : null));
+  console.log('PLAIN PASSWORD: ', plainPassword);
+  console.log('PASSWORD: ', this.password);
+
+  return (
+    bcrypt
+      // compares string variable with stored variable password
+      .compare(plainPassword, this.password)
+      .then(valid => (valid ? this : null))
+  );
 };
 
 // Create a method in the schema to generate a Token following a valid login
+// Remember: This is A COLLECTION LEVEL thing - but SHOULD it be a STATIC?
+// Need to be talking about a PARTICULAR user, NOT the collection
 users.methods.generateToken = function () {
-  const token = jwt.sign({ username: users.username, secret });
+  // console.log('generateToken user: ', users.username);
+  // console.log('SECRET: ', process.env.SECRET);
+  // console.log('USERS:::', users);
+  // console.log('THIS.USERNAME', this.username);
+  // Look at the .sign() signature!!
+  const token = jwt.sign({ username: users.username }, process.env.SECRET);
+  console.log('******** GOT HERE BABY! *******');
   return token;
 };
 

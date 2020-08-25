@@ -23,13 +23,19 @@ module.exports = async (req, res, next) => {
   // console.log('DECODED FORM: ------------', decoded);
   let [username, password] = decoded.split(':'); // splitting "someuser:somepass" into ['someuser', 'somepass']
 
+  console.log('USERNAME + PASSWORD: ', username, password);
+
   // If the user is valid, generate a token and append it to the request object
   // AuthenticateBasic is a method of USERS - and USERS is whatever came back from the required schema above
   // Let's change this from old-school promise structure to async/await
   try {
     const validUser = await users.authenticateBasic(username, password);
 
-    req.token = users.generateToken(validUser);
+    // console.log('VALID USER? :', validUser);
+
+    // We need a particular USER to call this on - with a particular token - aka don't need to pass in validUser - it's calling the method ON a particular user.
+    req.token = validUser.generateToken();
+    console.log('REQ TOKEN  ________', req.token);
     req.user = username;
     next();
   } catch (err) {
