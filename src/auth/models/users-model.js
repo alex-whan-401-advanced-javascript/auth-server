@@ -7,13 +7,12 @@ const mongoose = require('mongoose');
 const users = new mongoose.Schema({
   username: { type: String, require: true, unique: true },
   password: { type: String, required: true },
-  email: { type: String },
-  role: {
-    type: String,
-    required: true,
-    default: 'user',
-    enum: ['admin', 'editor', 'user'],
-  },
+  // role: {
+  //   type: String,
+  //   required: true,
+  //   default: 'user',
+  //   enum: ['admin', 'editor', 'user'],
+  // },
 });
 
 // Before we save a record:
@@ -25,7 +24,7 @@ users.pre('save', async function () {
 });
 
 // Create a method in the schema to authenticate a user using the hashed password
-users.statics.authenticateBasic = function (username, password) {
+users.statics.authenticateBasic = async function (username, password) {
   let query = { username };
   return this.findOne(query)
     .then(user => {
