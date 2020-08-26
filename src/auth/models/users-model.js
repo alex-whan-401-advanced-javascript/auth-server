@@ -92,6 +92,22 @@ users.methods.generateToken = function () {
 // Once the handshaking process has completed in the middleware method, the middleware will need our users model to be able to create a new account for the user that was just authenticated or retrieve an existing account, if this is a returning users.
 
 // Create a new method that will do a lookup for the account by email or username
+users.statics.lookupUser = async function (emailOrUsername) {
+  let query = { emailOrUsername };
+  let user = this.findOne(query);
+  if (user) {
+    return 'Account already exists!';
+  }
+  return (
+    this.findOne(query)
+      // if it finds it, something happens, and if it doesn't the console.error happens (presumably)
+      .then(user => {
+        return user;
+      })
+      .catch(console.error)
+  );
+};
+
 // If found, return it
 // If not, create a new account for the user and return that
 
