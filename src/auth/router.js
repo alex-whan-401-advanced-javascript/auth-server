@@ -6,6 +6,12 @@ const router = express.Router();
 const basicAuth = require('./middleware/basic');
 const User = require('./models/users-model');
 
+// Add a new /oauth route to the auth router
+// In order to handle OAuth requests, we will need a route that can receive the initial code from the OAuth server and a middleware module that will handle the handshaking process.
+
+// This should be a GET route
+// i.e. app.get('/oauth', ...)
+
 router.post('/signup', (req, res, next) => {
   // Create a POST route for /signup
   // Accepts either a JSON object or FORM Data with the keys “username” and “password”

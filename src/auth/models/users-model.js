@@ -88,4 +88,11 @@ users.methods.generateToken = function () {
   return token;
 };
 
+// Users Model
+// Once the handshaking process has completed in the middleware method, the middleware will need our users model to be able to create a new account for the user that was just authenticated or retrieve an existing account, if this is a returning users.
+
+// Create a new method that will do a lookup for the account by email or username
+// If found, return it
+// If not, create a new account for the user and return that
+
 module.exports = mongoose.model('users', users);
