@@ -70,9 +70,20 @@ async function getUser(remoteUser) {
     password: 'oauthpassword',
   };
 
-  let user = await users.save(userRecord);
-  // Generate a token using the users model
-  let token = users.generateToken(user);
+  let recordExists = users.find({
+    userRecord,
+  });
 
-  return [user, token];
+  if (!recordExists) {
+    // Create a new user
+    let user = await users.save(userRecord);
+    // Generate a token using the users model
+    let token = users.generateToken(user);
+    return [user, token];
+  } else {
+    // Otherwise, return the existing user and generated token
+    let user = recordExists;
+    let token = await recordExists.generateToken();
+    return [user, token];
+  }
 }
