@@ -3,13 +3,13 @@
 process.env.SECRET = 'muysecreto';
 
 const jwt = require('jsonwebtoken');
-
+require('dotenv').config();
 const server = require('../src/server').server;
 const supergoose = require('@code-fellows/supergoose');
 
 const mockRequest = supergoose(server);
 
-describe.skip('Auth Router', () => {
+describe('Auth Router', () => {
   describe(`users signup/in`, () => {
     it('can sign up', async () => {
       const userData = {
@@ -21,9 +21,7 @@ describe.skip('Auth Router', () => {
 
       const results = await mockRequest.post('/signup').send(userData);
 
-      const token = jwt.verify(results.text, process.env.SECRET);
-
-      expect(token.id).toBeDefined();
+      expect(results.statusCode).toBe(201);
     });
 
     it('can signin with basic', async () => {
@@ -40,7 +38,8 @@ describe.skip('Auth Router', () => {
         .post('/signin')
         .auth('joey', 'password');
 
-      const token = jwt.verify(results.text, process.env.SECRET);
+      let parsedToken = JSON.parse(results.text).token;
+      const token = jwt.verify(parsedToken, process.env.SECRET);
 
       expect(token).toBeDefined();
     });
