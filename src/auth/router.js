@@ -5,6 +5,7 @@ const express = require('express');
 const router = express.Router();
 const basicAuth = require('./middleware/basic');
 const User = require('./models/users-model');
+const oauth = require('./middleware/oauth');
 
 // Add a new /oauth route to the auth router
 // In order to handle OAuth requests, we will need a route that can receive the initial code from the OAuth server and a middleware module that will handle the handshaking process.
@@ -35,6 +36,10 @@ router.post('/signin', basicAuth, (req, res, next) => {
   res.status(201).json({ token: req.token, user: req.user });
   // Additionally, set a Cookie and a Token header on the response, with the token as the value
   res.cookie('basicAuth', req.token);
+});
+
+router.get('/oauth', oauth, (req, res) => {
+  res.status(200).send(req.token);
 });
 
 router.get('/users', async (req, res, next) => {

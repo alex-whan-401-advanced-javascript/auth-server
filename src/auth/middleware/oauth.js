@@ -12,7 +12,14 @@ const CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
 
 // Create a new middleware module called oauth.js in your auth module’s middleware folder
 
-module.exports = async (req, res, next) => {};
+module.exports = async function authorize(req, res, next) {
+  try {
+    let code = req.query.code;
+    console.log('(1) CODE: ', code);
+  } catch (error) {
+    next(`ERROR: ${error.message}`);
+  }
+};
 
 // This should be required by your auth router and attached inline to the /oauth route:
 // app.get('/oauth', OAuthMiddleware, ...)
