@@ -3,6 +3,7 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
+const { use } = require('../router');
 require('dotenv').config();
 
 // Create a Users Mongoose model/schema in the auth system
@@ -87,5 +88,32 @@ users.methods.generateToken = function () {
   console.log('******** GOT HERE BABY! *******');
   return token;
 };
+
+// Users Model
+// Once the handshaking process has completed in the middleware method, the middleware will need our users model to be able to create a new account for the user that was just authenticated or retrieve an existing account, if this is a returning users.
+
+// Create a new method that will do a lookup for the account by email or username
+// users.statics.lookupUser = async function (emailOrUsername) {
+//   let query = { emailOrUsername };
+//   let user = this.findOne(query);
+//   if (user.length !== 0) {
+//     return `Account already exists: ${user}`;
+//   } else if (!user.length) {
+//     // Need to create a new account
+//     let newUser = new users(req.body);
+//   }
+
+//   return (
+//     this.findOne(query)
+//       // if it finds it, something happens, and if it doesn't the console.error happens (presumably)
+//       .then(user => {
+//         return user;
+//       })
+//       .catch(console.error)
+//   );
+// };
+
+// If found, return it
+// If not, create a new account for the user and return that
 
 module.exports = mongoose.model('users', users);
