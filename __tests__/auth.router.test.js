@@ -43,5 +43,39 @@ describe('Auth Router', () => {
 
       expect(token).toBeDefined();
     });
+
+    it.skip('can fail signin with bad password', async () => {
+      const userData = {
+        username: 'joey',
+        password: 'password',
+        role: 'admin',
+        email: 'admin@admin.com',
+      };
+
+      await mockRequest.post('/signup').send(userData);
+
+      const results = await mockRequest
+        .post('/signin')
+        .auth('joey', 'badpassword');
+
+      expect(results.statusCode).toBe(401);
+    });
+
+    it.skip('can fail signin with unknown user', async () => {
+      const userData = {
+        username: 'joey',
+        password: 'password',
+        role: 'admin',
+        email: 'admin@admin.com',
+      };
+
+      await mockRequest.post('/signup').send(userData);
+
+      const results = await mockRequest
+        .post('/signin')
+        .auth('nobody', 'password');
+
+      expect(results.statusCode).toBe(401);
+    });
   });
 });
