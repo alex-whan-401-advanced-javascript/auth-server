@@ -95,6 +95,8 @@ const supergoose = require('@code-fellows/supergoose');
 
 const mockRequest = supergoose(server);
 
+process.env.SECRET = 'muysecreto';
+
 let users = {
   // We do need to make sure we have different TYPES of users
   // It'll run these checks for each of these TYPES of users (3 user types x 2 tests each)

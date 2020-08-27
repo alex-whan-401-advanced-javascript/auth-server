@@ -9,23 +9,23 @@ module.exports = async (req, res, next) => {
     return;
   }
 
+  const errorObj = {
+    message: 'Invalid User ID/Password',
+    status: 401,
+    statusMessage: 'Unauthorized',
+  };
+
   let encodedPair = req.headers.authorization.split(' ').pop();
 
   const decoded = base64.decode(encodedPair);
-  let [username, password] = decoded.split(':');
+  let [user, pass] = decoded.split(':');
 
   try {
-    const validUser = await users.authenticateBasic(username, password);
-
+    const validUser = await users.authenticateBasic(user, pass);
     req.token = validUser.generateToken();
-    console.log('REQ TOKEN  ________', req.token);
-    req.user = username;
+    req.user = user;
     next();
   } catch (err) {
-    next({
-      message: 'Invalid User ID/Password',
-      status: 401,
-      statusMessage: 'Unauthorized',
-    });
+    next(errorObj);
   }
 };
