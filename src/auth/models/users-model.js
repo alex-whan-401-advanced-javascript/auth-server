@@ -85,7 +85,6 @@ users.methods.generateToken = function () {
   // console.log('THIS.USERNAME', this.username);
   // Look at the .sign() signature!!
   const token = jwt.sign({ username: users.username }, process.env.SECRET);
-  console.log('******** GOT HERE BABY! *******');
   return token;
 };
 
