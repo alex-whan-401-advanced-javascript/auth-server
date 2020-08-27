@@ -48,7 +48,6 @@ describe('Auth Router', () => {
           .auth(username, password);
 
         const token = jwt.verify(results.body.token, process.env.JWT_SECRET);
-        console.log('RESULTS?????', token);
 
         id = token.id;
         expect(token.id).toBe(id);

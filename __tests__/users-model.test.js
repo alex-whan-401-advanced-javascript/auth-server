@@ -1,3 +1,4 @@
+/* eslint-disable comma-dangle */
 'use strict';
 
 require('dotenv').config();

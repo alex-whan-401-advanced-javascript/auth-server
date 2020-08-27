@@ -3,11 +3,13 @@
 const express = require('express');
 require('dotenv').config();
 const app = express();
-const userRouter = require('../src/auth/router');
+const authRouter = require('../src/auth/router');
 
 // Global Middleware
 app.use(express.json());
-app.use(userRouter);
+
+// Routes
+app.use(authRouter);
 
 module.exports = {
   server: app,

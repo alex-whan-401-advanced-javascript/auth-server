@@ -3,7 +3,7 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
-const { use } = require('../router');
+// const { use } = require('../router');
 require('dotenv').config();
 
 // Create a Users Mongoose model/schema in the auth system
