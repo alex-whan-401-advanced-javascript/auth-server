@@ -8,6 +8,7 @@ const notFound = require('../src/middleware/404');
 const errorHandler = require('../src/middleware/500');
 
 // Global Middleware
+app.use(express.static('./public'));
 app.use(express.json());
 
 // Routes
