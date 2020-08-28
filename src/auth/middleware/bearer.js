@@ -17,12 +17,16 @@ module.exports = async (req, res, next) => {
 
   // Catching errors from user model
   // This is authenticateToken's job - to resolve asynchronously to a VALID USER
-  User.authenticateToken(token)
-    .then(validUser => {
-      req.user = validUser;
-      next();
-    })
-    .catch(err => next('Invalid Login!'));
+
+  try {
+    const validUser = await User.authenticateToken(token);
+
+    req.user = validUser;
+
+    next();
+  } catch (err) {
+    next('INVALID LOGIN!');
+  }
 };
 
 // Where does this token come from??
