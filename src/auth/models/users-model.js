@@ -70,15 +70,15 @@ users.statics.authenticateToken = async function (token) {
   let tokenObject = jwt.verify(token, process.env.JWT_SECRET);
 
   // Look up user by ID in the token
-  const foundUser = await users.findById(tokenObject.id);
+  return await this.findById(tokenObject.id);
 
-  if (foundUser) {
-    return foundUser;
-  } else {
-    // user not found? throw a "user not found" error
-    // Any errors happening up above here should bubble out - not try/catch needed
-    throw new Error('*** USER NOT FOUND ***');
-  }
+  // if (foundUser) {
+  //   return foundUser;
+  // } else {
+  //   // user not found? throw a "user not found" error
+  //   // Any errors happening up above here should bubble out - not try/catch needed
+  //   throw new Error('*** USER NOT FOUND ***');
+  // }
 };
 
 module.exports = mongoose.model('users', users);
