@@ -29,8 +29,9 @@ router.post('/signin', basicAuth, async (req, res, next) => {
   });
 });
 
-router.get('/oauth', oauth, (req, res) => {
-  res.status(200).send(req.token);
+router.get('/oauth', oauth, async (req, res) => {
+  let token = await req.token;
+  res.status(200).send(token);
 });
 
 // router.get('/users', async (req, res, next) => {

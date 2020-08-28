@@ -5,7 +5,7 @@ const User = require('../models/users-model');
 
 const tokenServerUrl = 'https://github.com/login/oauth/access_token';
 const remoteAPI = 'https://api.github.com/user';
-const API_SERVER = 'http://localhost:3000/oauth';
+const API_SERVER = 'http://localhost:3001/oauth';
 
 const CLIENT_ID = process.env.GITHUB_CLIENT_ID;
 const CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
@@ -15,6 +15,7 @@ const CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
 module.exports = async function authorize(req, res, next) {
   try {
     let code = req.query.code; // maybe take off await
+    // console.log('MY REQUEST QUERY', req.query);
     console.log('(1) CODE: ', code);
 
     let remoteToken = await exchangeCodeForToken(code);

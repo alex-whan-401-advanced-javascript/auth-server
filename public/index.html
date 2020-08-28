@@ -16,7 +16,7 @@
 
       let options = {
         client_id: '6433ae56d16b1e621fa1',
-        redirect_uri: 'http://localhost:3000/oauth',
+        redirect_uri: 'http://localhost:3001/oauth',
         scope: 'read:user',
         state: 'statewords', // 401appconsent
       };
@@ -28,6 +28,7 @@
         .join('&');
 
       let authURL = `${URL}?${QueryString}`;
+      // console.log('$$$$$$$$$$$$$ authUrl', authURL);
 
       let link = document.getElementById('oauth');
       link.setAttribute('href', authURL);
