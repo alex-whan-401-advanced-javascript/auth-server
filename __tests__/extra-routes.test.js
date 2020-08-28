@@ -18,12 +18,8 @@ it('should allow entry with good token', async () => {
 });
 
 it('should NOT allow entry with bad token', async () => {
-  // Can be convenient to store a TEST_TOKEN in environment
-  // But you will have to refresh it (aka grab a new one) if/when it expires
   const response = await mockRequest
     .get('/secret')
     .auth('bad token', { type: 'bearer' });
-
-  // STRETCH: respond with more appropriate status
   expect(response.status).toBe(500);
 });

@@ -68,7 +68,6 @@ users.statics.authenticateToken = async function (token) {
   // Use JWT library to validate it with the secret - if valid, look up user by the ID in the TOKEN and return it
   // Otherwise, return the error
   let tokenObject = jwt.verify(token, process.env.JWT_SECRET);
-  // console.log('TOKEN OBJECT?????', tokenObject);
 
   // Look up user by ID in the token
   const foundUser = await users.findById(tokenObject.id);

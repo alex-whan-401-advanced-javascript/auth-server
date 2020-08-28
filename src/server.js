@@ -5,7 +5,7 @@ require('dotenv').config();
 const app = express();
 const cors = require('cors');
 const authRouter = require('../src/auth/router');
-const extraRouter = require('../extra-routes');
+const extraRouter = require('./extra-routes');
 const notFound = require('../src/middleware/404');
 const errorHandler = require('../src/middleware/500');
 
