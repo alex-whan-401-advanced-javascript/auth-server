@@ -14,7 +14,7 @@ const CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
 
 module.exports = async function authorize(req, res, next) {
   try {
-    let code = req.query.code;
+    let code = req.query.code; // maybe take off await
     console.log('(1) CODE: ', code);
 
     let remoteToken = await exchangeCodeForToken(code);
@@ -23,8 +23,8 @@ module.exports = async function authorize(req, res, next) {
     let remoteUser = await getRemoteUserInfo(remoteToken);
     console.log('(3) GITHUB USER: ', remoteUser);
 
-    let [user, token] = await getUser(remoteUser);
     // Add the token and the user record to the request object
+    let [user, token] = await getUser(remoteUser);
     req.user = user;
     req.token = token;
     console.log('(4) LOCAL USER: ', user);
@@ -38,7 +38,7 @@ module.exports = async function authorize(req, res, next) {
 
 // Exchange the code received on the initial request for a token from the Provider
 async function exchangeCodeForToken(code) {
-  let tokenResponse = await (await superagent.post(tokenServerUrl)).send({
+  let tokenResponse = await superagent.post(tokenServerUrl).send({
     code: code,
     client_id: CLIENT_ID,
     client_secret: CLIENT_SECRET,
