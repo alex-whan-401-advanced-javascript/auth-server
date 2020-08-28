@@ -45,17 +45,40 @@ users.methods.generateToken = async function () {
   return jwt.sign(payload, process.env.JWT_SECRET);
 };
 
-users.statics.createFromOauth = async function (email) {
-  if (!email) {
+users.statics.createFromOauth = async function (username) {
+  if (!username) {
     return Promise.reject('Validation Error');
   }
 
-  const user = await this.findOne({ email });
+  const user = await this.findOne({ username });
 
   if (user) {
+    console.log(`Welcome back, ${user.username}!`);
     return user;
   } else {
-    return this.create({ username: email, password: 'none', email: email });
+    console.log('Creating new user...');
+    let password = 'therealestpassword';
+    return this.create({ username, password });
+  }
+};
+
+// users.authenticateToken will be a STATIC - because we need to ask the whole collection for it
+// Asking like: Do we have this token already in our database?
+users.statics.authenticateToken = async function (token) {
+  // Use JWT library to validate it with the secret - if valid, look up user by the ID in the TOKEN and return it
+  // Otherwise, return the error
+  let tokenObject = jwt.verify(token, process.env.JWT_SECRET);
+  // console.log('TOKEN OBJECT?????', tokenObject);
+
+  // Look up user by ID in the token
+  const foundUser = await users.findById(tokenObject.id);
+
+  if (foundUser) {
+    return foundUser;
+  } else {
+    // user not found? throw a "user not found" error
+    // Any errors happening up above here should bubble out - not try/catch needed
+    throw new Error('*** USER NOT FOUND ***');
   }
 };
 

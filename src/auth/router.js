@@ -24,7 +24,7 @@ router.post('/signin', basicAuth, async (req, res, next) => {
   // res.status(201).json({ token: req.token, user: req.user });
 
   res.send({
-    token: await req.token,
+    token: await req.token, // might need to remove await
     user: req.user,
   });
 });
@@ -33,9 +33,9 @@ router.get('/oauth', oauth, (req, res) => {
   res.status(200).send(req.token);
 });
 
-router.get('/users', async (req, res, next) => {
-  let recordsToGet = await User.findAll();
-  res.status(200).json(recordsToGet);
-});
+// router.get('/users', async (req, res, next) => {
+//   let recordsToGet = await User.findAll({});
+//   res.status(200).json(recordsToGet);
+// });
 
 module.exports = router;

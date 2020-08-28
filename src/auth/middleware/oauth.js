@@ -1,7 +1,7 @@
 'use strict';
 
 const superagent = require('superagent');
-const users = require('../models/users-model');
+const User = require('../models/users-model');
 
 const tokenServerUrl = 'https://github.com/login/oauth/access_token';
 const remoteAPI = 'https://api.github.com/user';
@@ -65,25 +65,30 @@ async function getRemoteUserInfo(token) {
 
 // Create/Retrieve an account from our Mongo users database matching the user’s account (email or username) using the users model
 async function getUser(remoteUser) {
-  let userRecord = {
-    username: remoteUser.login,
-    password: 'oauthpassword',
-  };
+  let user = await User.createFromOauth(remoteUser.login);
+  let token = user.generateToken();
 
-  let recordExists = users.find({
-    userRecord,
-  });
+  return [user, token];
 
-  if (!recordExists) {
-    // Create a new user
-    let user = await users.save(userRecord);
-    // Generate a token using the users model
-    let token = users.generateToken(user);
-    return [user, token];
-  } else {
-    // Otherwise, return the existing user and generated token
-    let user = recordExists;
-    let token = await recordExists.generateToken();
-    return [user, token];
-  }
+  // let userRecord = {
+  //   username: remoteUser.login,
+  //   password: 'oauthpassword',
+  // };
+
+  // let recordExists = users.find({
+  //   userRecord,
+  // });
+
+  // if (!recordExists) {
+  //   // Create a new user
+  //   let user = await users.save(userRecord);
+  //   // Generate a token using the users model
+  //   let token = users.generateToken(user);
+  //   return [user, token];
+  // } else {
+  //   // Otherwise, return the existing user and generated token
+  //   let user = recordExists;
+  //   let token = await recordExists.generateToken();
+  //   return [user, token];
+  // }
 }
