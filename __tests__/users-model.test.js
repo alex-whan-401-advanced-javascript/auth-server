@@ -67,9 +67,9 @@ it('should generate a token', async () => {
 it('creating an existing user returns user', async () => {
   const user = await new User(fakeUser).save();
   // The THING we want to get back is a user - and we want to make sure it's the CORRECT user with the password/email
-  const foundOrCreated = await User.createFromOauth(user.email);
+  const foundOrCreated = await User.createFromOauth(user.username);
 
-  // expect(foundOrCreated.email).toBe(user.email);
+  expect(foundOrCreated.email).toBe(user.email);
   expect(foundOrCreated.password).toBe(user.password);
 });
 
