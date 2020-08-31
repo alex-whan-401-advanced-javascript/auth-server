@@ -21,7 +21,14 @@ module.exports = async (req, res, next) => {
   try {
     const validUser = await User.authenticateToken(token);
 
-    req.user = validUser;
+    // req.user = validUser;
+
+    req.user = {
+      username: validUser.username,
+      fullname: validUser.fullname,
+      email: validUser.email,
+      capabilities: validUser.capabilities,
+    };
 
     next();
   } catch (err) {

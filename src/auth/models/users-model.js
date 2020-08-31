@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 'use strict';
 
 const jwt = require('jsonwebtoken');
@@ -13,15 +14,34 @@ const users = new mongoose.Schema({
   email: { type: String },
   role: {
     type: String,
-    required: true,
     default: 'user',
-    enum: ['admin', 'editor', 'user'],
+    enum: ['admin', 'editor', 'writer', 'user'],
   },
+  capabilities: { type: Array, required: true, default: [] },
 });
 
 users.pre('save', async function () {
   if (this.isModified('password')) {
     this.password = await bcrypt.hash(this.password, 10);
+  }
+
+  let role = this.role;
+
+  if (this.isModified('role')) {
+    switch (role) {
+      case 'admin':
+        this.capabilities = ['create', 'read', 'update', 'delete'];
+        break;
+      case 'editor':
+        this.capabilities = ['create', 'read', 'update'];
+        break;
+      case 'writer':
+        this.capabilities = ['create', 'read'];
+        break;
+      case 'user':
+        this.capabilities = ['read'];
+        break;
+    }
   }
 });
 
@@ -40,6 +60,7 @@ users.methods.generateToken = async function () {
   const payload = {
     id: this._id,
     role: this.role,
+    capabilities: this.capabilities,
   };
 
   return jwt.sign(payload, process.env.JWT_SECRET);
