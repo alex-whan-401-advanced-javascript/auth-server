@@ -23,6 +23,13 @@ module.exports = async (req, res, next) => {
 
     req.user = validUser;
 
+    // req.user = {
+    //   username: validUser.username,
+    //   fullname: validUser.fullname,
+    //   email: validUser.email,
+    //   capabilities: validUser.capabilities,
+    // };
+
     next();
   } catch (err) {
     next('INVALID LOGIN!');
