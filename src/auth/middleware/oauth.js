@@ -70,26 +70,4 @@ async function getUser(remoteUser) {
   let token = user.generateToken();
 
   return [user, token];
-
-  // let userRecord = {
-  //   username: remoteUser.login,
-  //   password: 'oauthpassword',
-  // };
-
-  // let recordExists = users.find({
-  //   userRecord,
-  // });
-
-  // if (!recordExists) {
-  //   // Create a new user
-  //   let user = await users.save(userRecord);
-  //   // Generate a token using the users model
-  //   let token = users.generateToken(user);
-  //   return [user, token];
-  // } else {
-  //   // Otherwise, return the existing user and generated token
-  //   let user = recordExists;
-  //   let token = await recordExists.generateToken();
-  //   return [user, token];
-  // }
 }
